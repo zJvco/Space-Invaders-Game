@@ -3,6 +3,7 @@ import os
 import sys
 import random
 from math import sqrt
+from pygame import mixer
 
 # Start pygame modules
 pygame.init()
@@ -36,7 +37,7 @@ def main():
 
 
     def collision(bx, by, ex, ey):
-        distance = sqrt(((bx - ex)**2) + ((by - ey)**2))
+        distance = sqrt((bx - (ex))**2 + (by - ey)**2)
 
         if distance < enemy_width:
             return True
@@ -76,11 +77,22 @@ def main():
     bullet_state = False
     bullet_color = (231, 76, 60)
 
-    # BG
+    # Background Image
     background = pygame.transform.scale2x(pygame.image.load(os.path.join("assets", "background.png")))
 
     # Font
     font = pygame.font.SysFont("comicsans", 25)
+
+    # Background Sound
+    mixer.music.load(os.path.join("assets", "Background-Music.mp3"))
+    mixer.music.play(-1)
+    mixer.music.set_volume(0.2)
+
+    # Bullet Sound
+    bullet_sound = mixer.Sound(os.path.join("assets", "Laser_Sound.mp3"))
+
+    # Explosion Sound
+    explosion_sound = mixer.Sound(os.path.join("assets", "Explosion_Sound.wav"))
 
     score = 0
     level = 0
@@ -111,7 +123,9 @@ def main():
             player_x += player_speed
         if keys[pygame.K_LEFT] and player_x >= 0:
             player_x -= player_speed
+
         if keys[pygame.K_SPACE] and not bullet_state:
+            bullet_sound.play()
             bullet_x = current_bullet_x
             bullet_state = True
 
@@ -123,6 +137,8 @@ def main():
                 enemy_y[e] += enemy_height
 
             if collision(bullet_x, bullet_y, enemy_x[e], enemy_y[e]):
+                explosion_sound.play()
+                bullet_x = -100
                 bullet_y = player_y - 20
                 bullet_state = False
                 enemy_x[e] = (random.randint(enemy_width, width - enemy_width))
