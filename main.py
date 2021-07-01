@@ -214,7 +214,7 @@ def main():
                 pos3_y = height/2 + 135
 
             menu_polygon_move(pos1_x, pos1_y, pos2_x, pos2_y, pos3_x, pos3_y, YELLOW)
-        elif game_stage == "GAME": # GAME
+        elif game_stage == "GAME":
             mixer.music.stop()
             window.blit(background, (0, 0))
             current_bullet_x = player_x + player_ship.get_width()/2 - bullet_width/2
@@ -297,7 +297,7 @@ def main():
                 score = 0
                 game_stage = "MENU"
                 mixer.music.play()
-        elif game_stage == "OPTIONS": # OPTIONS
+        elif game_stage == "OPTIONS":
             window.blit(background, (0, 0))
             window.blit(menu_logo, (width/2 - menu_logo.get_width()/2, -50))
             window.blit(arrow_right_text, (width/2 - arrow_right_text.get_width()/2, height/2 - 50))
